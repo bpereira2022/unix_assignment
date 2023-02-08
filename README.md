@@ -22,7 +22,7 @@ printing out the first line showed headers including Sample ID, JG_OTU, Group, a
 ```
 tail fang_et_al_genotypes.txt
 ```
-File ends with column of alleles. 
+File ends with columns of alleles. 
 ```
 less fang_et_al_genotypes.txt
 ```
