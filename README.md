@@ -69,5 +69,15 @@ file snp_position.txt
 All ASCII text. 
 ### Data Processing
 #### Maize Data
+Before processing, I wanted to make sure that "Group" was under $3:
+```
+awk '{ print $3 }' fang_et_al_genotypes.txt | head -n 3
+```
+This confirmed that Group is indeed under $3 assigned by awk. Similar to the 'cat' command, awk is being used here to show us the contents of a file. Specifically, column 3 of our file, which has been assigned $3. Head prints out the first 3 rows. 
+Next, we want to create a folder with data solely on maize, which are groups ZMMIL, ZMMLR, and ZMMMR. 
+```
+awk '$3 ~ /Group|ZMMIL|ZMMLR|ZMMMR/' fang_et_al_genotypes.txt |cat > maize_fang.txt
+```
+Awk is a function that can be used for processing. Column $3 includes our desired groups (ZMMIL, ZMMLR, and ZMMMR) from our file. If awk matches our pattern, it will print out all of the content in teh file ($0). Because we want to move this information into a file, there is a pipe with the print feature 'cat', whos standard output goes into a new created file. 
 
 #### Teosinte Data
