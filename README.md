@@ -70,6 +70,7 @@ All ASCII text.
 ### Data Processing
 #### Maize Data
 1) making our files with desired maize + teosinte data: 
+
 Before processing, I wanted to make sure that "Group" was under $3:
 ```
 awk '{ print $3 }' fang_et_al_genotypes.txt | head -n 3
@@ -88,12 +89,21 @@ The only groups that come up are ZMMIL, ZMMLR, and ZMMMR, success!
 ```
 less maize_fang.txt
 ```
-It looks like we have our desired content for those groups. 
+It looks like we have our desired content for those groups. Next, we do the same for Teosinte:
 ```
+awk '$3 ~ /Group|ZMPBA|ZMPIL|ZMPJA/' fang_et_al_genotypes.txt |cat > teosinte_fang.txt
+```
+As decribed above, we have made a new file with data that is exclusive to teosinte groups. I followed up with the previously te described step-checks. 
+
 2) Before continuing, we need to transpose the genotype data in order to join both files: 
 ```
 awk -f transpose.awk maize_fang.txt > transposed_genotypes.txt
 ```
+```
+awk -f transpose.awk teosinte_fang.txt > transposed_genotypesteo.txt
+```
 3) Next, we want to join these files based on the common columns SNP_ID and 
 
 #### Teosinte Data
+
+
