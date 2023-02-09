@@ -34,7 +34,7 @@ This file is 11 megabytes.
 ```
 cut -f [column number] fang_et_al_genotypes.txt | uniq
 ```
-The Sample_ID column consists IDs followed by numbers and letters. The group column includes TRIPS, ZDIPL, ZPERR, ZLUXR, ZMHUE, ZMPBA, ZMPJA, ZMXCH, ZMXCP, ZMXNO, ZMXNT, ZMPIL, ZMXIL, ZMMLR, ZMMMR, and ZMMIL. Loci begin at column 4 of the file, and end at column 968. Within those columns, there are allelses. Additionally, there are rows/columns with ?/? in place of alleles. 
+The Sample_ID column consists IDs followed by numbers and letters. The group column includes TRIPS, ZDIPL, ZPERR, ZLUXR, ZMHUE, ZMPBA, ZMPJA, ZMXCH, ZMXCP, ZMXNO, ZMXNT, ZMPIL, ZMXIL, ZMMLR, ZMMMR, and ZMMIL. Loci begin at column 4 of the file, and end at column 968. Within those columns, there are alleles. Additionally, there are unknown alleles, with ?/? in place of alleles. 
 ```
 file fang_et_al_genotypes.txt
 ```
@@ -58,9 +58,16 @@ I was wrong. Using cat did not give us an idea of how this file is organized due
 ```
 head -n 1 snp_position.txt
 ```
-Our headers include SNP_ID, cdv_marker_id, Chromosome	Position, alt_pos, mult_positions, amplicon,	cdv_map_feature.name,	gene,	candidate/random,	Genaissance_daa_id,	Sequenom_daa_id,	count_amplicons,	count_cmf, and	count_gene. 
+Our headers include SNP_ID, cdv_marker_id, Chromosome	Position, alt_pos (nucleotide location), mult_positions, amplicon,	cdv_map_feature.name,	gene,	candidate/random,	Genaissance_daa_id,	Sequenom_daa_id,	count_amplicons,	count_cmf, and	count_gene. 
 ```
 ls -lh snp_position.txt 
 ```
 This file is 81 kilobites - much smaller than the other file. 
 ```
+file snp_position.txt
+```
+All ASCII text. 
+### Data Processing
+#### Maize Data
+
+#### Teosinte Data
