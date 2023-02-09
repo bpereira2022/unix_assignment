@@ -69,6 +69,7 @@ file snp_position.txt
 All ASCII text. 
 ### Data Processing
 #### Maize Data
+1) making our files with desired maize + teosinte data: 
 Before processing, I wanted to make sure that "Group" was under $3:
 ```
 awk '{ print $3 }' fang_et_al_genotypes.txt | head -n 3
@@ -78,6 +79,21 @@ Next, we want to create a folder with data solely on maize, which are groups ZMM
 ```
 awk '$3 ~ /Group|ZMMIL|ZMMLR|ZMMMR/' fang_et_al_genotypes.txt |cat > maize_fang.txt
 ```
-Awk is a function that can be used for processing. Column $3 includes our desired groups (ZMMIL, ZMMLR, and ZMMMR) from our file. If awk matches our pattern, it will print out all of the content in teh file ($0). Because we want to move this information into a file, there is a pipe with the print feature 'cat', whos standard output goes into a new created file. 
+Awk is a function that can be used for processing. Column $3 includes our desired groups (ZMMIL, ZMMLR, and ZMMMR) from our file. If awk matches our pattern, it will print out all of the content in our file (represented by $0). Because we want to move this information into a file, there is a pipe with the print feature 'cat', who's standard output goes into a new created file. 
+Next, we will want to double check that this actually worked: 
+```
+cut -f 3 maize_fang.txt | uniq
+```
+The only groups that come up are ZMMIL, ZMMLR, and ZMMMR, success! 
+```
+less maize_fang.txt
+```
+It looks like we have our desired content for those groups. 
+```
+2) Before continuing, we need to transpose the genotype data in order to join both files: 
+```
+awk -f transpose.awk maize_fang.txt > transposed_genotypes.txt
+```
+3) Next, we want to join these files based on the common columns SNP_ID and 
 
 #### Teosinte Data
