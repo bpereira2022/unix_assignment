@@ -42,3 +42,25 @@ This file is all ASCII text with very long lines - there shouldnt be any issues 
 
 ### Attributes of 'snp_position.txt' 
 #### Here is the snippet of code used for data inspection, followed by what we learned about out file: 
+```
+wc snp_position.txt
+```
+This file has 984 lines/rows.
+```
+awk -F "\t" '{print NF; exit}' snp_position.txt
+```
+This file has 15 columns. 
+Because this file is horrible huge, we can run cat for a first inspection. 
+```
+cat snp_position.txt 
+```
+I was wrong. Using cat did not give us an idea of how this file is organized due to the high number of data in this file. It seems that if any row gets pushed down, the data is immediately disorganized. The next best option is to print out our column headers. 
+```
+head -n 1 snp_position.txt
+```
+Our headers include SNP_ID, cdv_marker_id, Chromosome	Position, alt_pos, mult_positions, amplicon,	cdv_map_feature.name,	gene,	candidate/random,	Genaissance_daa_id,	Sequenom_daa_id,	count_amplicons,	count_cmf, and	count_gene. 
+```
+ls -lh snp_position.txt 
+```
+This file is 81 kilobites - much smaller than the other file. 
+```
