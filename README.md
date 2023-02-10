@@ -68,7 +68,6 @@ file snp_position.txt
 ```
 All ASCII text. 
 ### Data Processing
-#### Maize Data
 1) making our files with desired maize + teosinte data: 
 
 Before processing, I wanted to make sure that "Group" was under $3:
@@ -102,8 +101,17 @@ awk -f transpose.awk maize_fang.txt > transposed_genotypes.txt
 ```
 awk -f transpose.awk teosinte_fang.txt > transposed_genotypesteo.txt
 ```
-3) Next, we want to join these files based on the common columns SNP_ID and 
-
+We want folders with particular headers "SNP_ID", "Chromosome", and "Position" from our original file, so the next step is to make them. We also need to sort both files before joining them, so we can go ahead and sort the snp file, which includes the 3 headers:
+```
+cut -f 1,3,4 snp_position.txt | head -n 1 > snp_sort.txt | head -n +2 | sort -k1,1 -c
+```
+```
+echo $?
+```
+This gave us our derised headers in the correct order through the previously described 'cut' of columns 1,3, and 4. The head command made sure we only pulled from the first line, where our headers are, and the output went into a new file. Next, the tail commaned removed the header of the file in order for the text data to be sorted. The -c is there to check whether or not the command worked, and the data is sorted. A '0' means success! 
+#### Maize Data
+In order to join files, we need to sort: 
+cut -f 1,3,4 transposed_genotypes.txt | head -n 1 > maize_sort.txt | head -n +2 | sort -k1,1 -c
 #### Teosinte Data
 
 
