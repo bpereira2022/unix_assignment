@@ -94,7 +94,7 @@ awk '$3 ~ /Group|ZMPBA|ZMPIL|ZMPJA/' fang_et_al_genotypes.txt |cat > teosinte_fa
 ```
 As decribed above, we have made a new file with data that is exclusive to teosinte groups. I followed up with the previously te described step-checks. 
 
-2) Before continuing, we need to transpose the genotype data in order to join both files: 
+2) Before continuing, we need to prepare out data in order to join both files: 
 ```
 awk -f transpose.awk maize_fang.txt > transposed_genotypes.txt
 ```
@@ -103,15 +103,33 @@ awk -f transpose.awk teosinte_fang.txt > transposed_genotypesteo.txt
 ```
 We want folders with particular headers "SNP_ID", "Chromosome", and "Position" from our original file, so the next step is to make them. We also need to sort both files before joining them, so we can go ahead and sort the snp file, which includes the 3 headers:
 ```
-cut -f 1,3,4 snp_position.txt | head -n 1 > snp_sort.txt | head -n +2 | sort -k1,1 -c
+cut -f 1,3,4 snp_position.txt | head -n 1 > snp_sort.txt 
+```
+This gave us our derised headers in the correct order through the previously described 'cut' of columns 1,3, and 4. The head command made sure we only pulled from the first line, where our headers are, and the output went into a new file. 
+```
+cut -f 1,3,4 snp_position.txt | tail -n +2 | sort -k1,1 -c >> snp_sort.txt
 ```
 ```
 echo $?
 ```
-This gave us our derised headers in the correct order through the previously described 'cut' of columns 1,3, and 4. The head command made sure we only pulled from the first line, where our headers are, and the output went into a new file. Next, the tail commaned removed the header of the file in order for the text data to be sorted. The -c is there to check whether or not the command worked, and the data is sorted. A '0' means success! 
+All data from columns 1,3, and 4 got pulled. Next, the tail commaned removed the header of the file in order for the text data to be sorted (a step that is needed before joining files). We want it to be sorted by SNP_ID, which is column 1. The -c is there to check whether or not the command worked, and the data is sorted. A '0' means success! We don't want the contents of the file to be replaced, so we use >> instead of >. 
 #### Maize Data
-In order to join files, we need to sort: 
-cut -f 1,3,4 transposed_genotypes.txt | head -n 1 > maize_sort.txt | head -n +2 | sort -k1,1 -c
+Sample_ID should be replaced by SNP_ID:
+```
+sed 's/Sample_ID/SNP_ID/' transposed_genotypes.txt | cat > maize_genotype.txt
+```
+This will replace any "Sample_ID" (there should only be 1) with SNP_ID. This can be checked by runnning 'less'. 
+Next, 
+BOTH the snp file, and maize genotype file need to be sorted in order to be joined. We previously sorted the snp_sorted.txt file, so now we need to sort the transposed_genotypes_final.txt file:
+```
+head -n +2 maize_genotype.txt | sort -k1,1 -c
+```
 #### Teosinte Data
-
-
+Sample_ID should be replaced by SNP_ID:
+```
+sed 's/Sample_ID/SNP_ID/' transposed_genotypesteo.txt | head -n 1 | cat > transposed_genotypesteo_final.txt
+```
+Sort:
+```
+head -n +2 transposed_genotypesteo_final.txt | sort -k1,1 -c
+```
