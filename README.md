@@ -94,42 +94,65 @@ awk '$3 ~ /Group|ZMPBA|ZMPIL|ZMPJA/' fang_et_al_genotypes.txt |cat > teosinte_fa
 ```
 As decribed above, we have made a new file with data that is exclusive to teosinte groups. I followed up with the previously te described step-checks. 
 
-2) Before continuing, we need to prepare out data in order to join both files: 
-```
-awk -f transpose.awk maize_fang.txt > transposed_genotypes.txt
-```
-```
-awk -f transpose.awk teosinte_fang.txt > transposed_genotypesteo.txt
-```
+2) Before continuing, we need to prepare our files for joining: 
+
 We want folders with particular headers "SNP_ID", "Chromosome", and "Position" from our original file, so the next step is to make them. We also need to sort both files before joining them, so we can go ahead and sort the snp file, which includes the 3 headers:
 ```
 cut -f 1,3,4 snp_position.txt | head -n 1 > snp_sort.txt 
 ```
 This gave us our derised headers in the correct order through the previously described 'cut' of columns 1,3, and 4. The head command made sure we only pulled from the first line, where our headers are, and the output went into a new file. 
 ```
-cut -f 1,3,4 snp_position.txt | tail -n +2 | sort -k1,1 -c >> snp_sort.txt
+cut -f 1,3,4 snp_position.txt | tail -n +2 | sort -k1,1 >> snp_sort.txt
 ```
 ```
 echo $?
 ```
 All data from columns 1,3, and 4 got pulled. Next, the tail commaned removed the header of the file in order for the text data to be sorted (a step that is needed before joining files). We want it to be sorted by SNP_ID, which is column 1. The -c is there to check whether or not the command worked, and the data is sorted. A '0' means success! We don't want the contents of the file to be replaced, so we use >> instead of >. 
+We don't want the JG_OTU or the Group column from maize_fang.txt, so let's remove them: 
+```
+cut --complement -f2,3 maize_fang.txt | cat > maize.txt
+```
+This made a new file with columns 1, and 4-986, excluding our unwanted columns. 
+Likewise for the Teosinte data: 
+```
+cut --complement -f2,3 teosinte_fang.txt | cat > teosinte.tx
+```
+Next, we need to tranpose theses two files: 
+
+Maize:
+```
+awk -f transpose.awk maize.txt > transposed_maize_genotypes.txt
+```
+
+Teosinte: 
+```
+awk -f transpose.awk teosinte.txt > transposed_teosinte_genotypes.txt
+```
+Our rows are now columns, and vise-versa. 
+Sample_ID should be SNP_ID to match other file: 
+
+Teosinte: 
+```
+sed 's/Sample_ID/SNP_ID/' transposed_teosinte_genotypes.txt | cat > transposed_teosinte_final.txt
+```
+
+Maize:
+```
+sed 's/Sample_ID/SNP_ID/' transposed_maize_genotypes.txt | cat > transposed_maize_final.txt
+```
+Just like the snp_sort.txt file, these files also need to be sorted: 
+```
+head -n 1 transposed_maize_final.txt > sorted_maize_final.txt | tail -n +2 transposed_maize_final.txt | sort -k1,1 >> sorted_maize_final.txt
+```
+```
+head -n 1 transposed_teosinte_final.txt > sorted_teosinte_final.txt | tail -n +2 transposed_teosinte_final.txt | sort -k1,1 >> sorted_teosinte_final.txt
+```
+We created a file with headers from the maize data file, then sorted the data (minus the header) by SNP_ID, which is found in $1. 
 #### Maize Data
-Sample_ID should be replaced by SNP_ID:
+Joining the sorted_maize_final.txt and snp_sort.txt file: 
 ```
-sed 's/Sample_ID/SNP_ID/' transposed_genotypes.txt | cat > maize_genotype.txt
+join -1 1 -2 1 -t $'\t' sorted_maize_final.txt snp_sort.txt > maize_joined.txt
 ```
-This will replace any "Sample_ID" (there should only be 1) with SNP_ID. This can be checked by runnning 'less'. 
-Next, 
-BOTH the snp file, and maize genotype file need to be sorted in order to be joined. We previously sorted the snp_sorted.txt file, so now we need to sort the transposed_genotypes_final.txt file:
-```
-head -n +2 maize_genotype.txt | sort -k1,1 -c
-```
+Because we do not have our desired organization of columns, we need to re-arrange the columns in order to have SNP_ID, Chromosome, Position, and genotype data for Maize. 
 #### Teosinte Data
-Sample_ID should be replaced by SNP_ID:
-```
-sed 's/Sample_ID/SNP_ID/' transposed_genotypesteo.txt | head -n 1 | cat > transposed_genotypesteo_final.txt
-```
-Sort:
-```
-head -n +2 transposed_genotypesteo_final.txt | sort -k1,1 -c
-```
+
