@@ -155,4 +155,8 @@ join -1 1 -2 1 -t $'\t' snp_sort.txt sorted_maize_final.txt > maize_joined.txt
 ```
 Now, we have a file with SNP_ID,
 #### Teosinte Data
+Joining the sorted_teosinte_final.txt and snp_sort.txt file: 
+```
+join -1 1 -2 1 -t $'\t' snp_sort.txt sorted_teosinte_final.txt > teosinte_joined.txt 
+```
 
