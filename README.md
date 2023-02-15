@@ -158,7 +158,7 @@ Now, we have a file with SNP_ID, Chromosome, Position, and genotype data, in tha
 ```
 head -n 1 maize_joined.txt | awk '$2 == 1 {print $0}' maize_joined.txt | sed 's+?/?+?+g'| sort -k3,3n > chrom1_increase.txt
 ```
-Do this for chromosomes 1-10. We are telling awk to print everything ($0) when column 2 (Chromosome) is equal to 1. Next, we are replacing ?/? with ?, per the assignment. Because the text itself had an /, using / confused the computer, but + seems to work! Next, we are sorting by position (column 3). 
+Do this for chromosomes 1-10. We are telling awk to print everything ($0) when column 2 (Chromosome) is equal to 1. Next, we are replacing ?/? with ?, per the assignment. Because the text itself had an /, using / confused the computer, but + seems to work! Next, we are sorting by position (column 3). Note that there are chromosome positions labeled as "multiple". These will be displayed at the top, but should not be excluded because they could still contribute to data analysis, depending on what you are asking. 
 
 #### Teosinte Data
 Joining the sorted_teosinte_final.txt and snp_sort.txt file: 
@@ -166,3 +166,4 @@ Joining the sorted_teosinte_final.txt and snp_sort.txt file:
 join -1 1 -2 1 -t $'\t' snp_sort.txt sorted_teosinte_final.txt > teosinte_joined.txt 
 ```
 Now, we have a file with SNP_ID, Chromosome, Position, and genotype data, in that order, for the teosinte data. 
+
