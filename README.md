@@ -151,8 +151,8 @@ We created a file with headers from the maize data file, then sorted the data (m
 #### Maize Data
 Joining the sorted_maize_final.txt and snp_sort.txt file: 
 ```
-join -1 1 -2 1 -t $'\t' sorted_maize_final.txt snp_sort.txt > maize_joined.txt
+join -1 1 -2 1 -t $'\t' snp_sort.txt sorted_maize_final.txt > maize_joined.txt
 ```
-Because we do not have our desired organization of columns, we need to re-arrange the columns in order to have SNP_ID, Chromosome, Position, and genotype data for Maize. 
+Now, we have a file with SNP_ID,
 #### Teosinte Data
 
