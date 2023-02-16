@@ -160,6 +160,13 @@ head -n 1 maize_joined.txt | awk '$2 == 1 {print $0}' maize_joined.txt | sed 's+
 ```
 Do this for chromosomes 1-10. We are telling awk to print everything ($0) when column 2 (Chromosome) is equal to 1. Next, we are replacing ?/? with ?, per the assignment. Because the text itself had an /, using / confused the computer, but + seems to work! Next, we are sorting by position (column 3). Note that there are chromosome positions labeled as "multiple". These will be displayed at the top, but should not be excluded because they could still contribute to data analysis, depending on what you are asking. 
 
+2) 10 files (1 for each chromosome) with SNPs ordered based on decreasing position values and with missing data encoded by this -:
+```
+head -n 1 maize_joined.txt | awk '$2 == 1 {print $0}' maize_joined.txt | sed 's+?/?+-+g'| sort -k3,3nr > chrom1_decrease.txt
+```
+Do this for chromosomes 1-10. The addition of 'r' to the sort program allows for reverse numerical numbering. 
+
+3) 
 #### Teosinte Data
 Joining the sorted_teosinte_final.txt and snp_sort.txt file: 
 ```
