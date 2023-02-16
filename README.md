@@ -166,11 +166,37 @@ head -n 1 maize_joined.txt | awk '$2 == 1 {print $0}' maize_joined.txt | sed 's+
 ```
 Do this for chromosomes 1-10. The addition of 'r' to the sort program allows for reverse numerical numbering. 
 
-3) 
+3) 1 file with all SNPs with unknown positions in the genome: 
+```
+awk '$3 ~ /unknown/ {print $0}' maize_joined.txt > multiple_position.txt
+```
+
+4) 1 file with all SNPs with multiple positions in the genome: 
+```
+awk '$3 ~ /multiple/ {print $0}' maize_joined.txt > unknown_position_teo.txt
+```
 #### Teosinte Data
 Joining the sorted_teosinte_final.txt and snp_sort.txt file: 
 ```
 join -1 1 -2 1 -t $'\t' snp_sort.txt sorted_teosinte_final.txt > teosinte_joined.txt 
 ```
-Now, we have a file with SNP_ID, Chromosome, Position, and genotype data, in that order, for the teosinte data. 
+1) 10 files (1 for each chromosome) with SNPs ordered based on increasing position values and with missing data encoded by ?:
+```
+head -n 1 teosinte_joined.txt | awk '$2 == 1 {print $0}' teosinte_joined.txt | sed 's+?/?+?+g'| sort -k3,3n > chrom1_increase_teo.txt
+```
+Do this for chromosomes 1-10. 
 
+2) 10 files (1 for each chromosome) with SNPs ordered based on decreasing position values and with missing data encoded by this -:
+```
+head -n 1 teosinte_joined.txt | awk '$2 == 1 {print $0}' teosinte_joined.txt | sed 's+?/?+-+g'| sort -k3,3nr > chrom1_decrease_teo.txt
+```
+Do this for chromosomes 1-10. 
+
+3) 1 file with all SNPs with unknown positions in the genome: 
+```
+awk '$3 ~ /unknown/ {print $0}' teosinte_joined.txt > unknown_position_teo.txt
+```
+4) 1 file with all SNPs with multiple positions in the genome: 
+```
+awk '$3 ~ /multiple/ {print $0}' teosinte_joined.txt > multiple_position_teo.txt
+```
